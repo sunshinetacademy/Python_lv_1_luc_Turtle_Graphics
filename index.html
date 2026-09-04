@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python - الرسم بالسلحفاة Turtle Graphics 🐢</title>
+<style>
+:root {
+  --primary: #6366f1;
+  --secondary: #8b5cf6;
+  --accent: #ec4899;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+  --dark: #1e293b;
+  --light: #f8fafc;
+  --gray: #64748b;
+  --code-bg: #1e1e1e;
+  --code-text: #d4d4d4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+  color: var(--dark);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.header .subtitle {
+  font-size: 1.3rem;
+  opacity: 0.95;
+  margin-bottom: 10px;
+}
+
+.header .quote {
+  font-style: italic;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.big-emoji {
+  font-size: 5rem;
+  margin: 20px 0;
+  display: block;
+}
+
+.content { padding: 40px; }
+
+.section {
+  margin-bottom: 50px;
+  padding: 30px;
+  background: var(--light);
+  border-radius: 15px;
+  border-right: 5px solid var(--primary);
+}
+
+.section h2 {
+  color: var(--primary);
+  font-size: 2rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--primary);
+}
+
+.section h3 {
+  color: var(--secondary);
+  font-size: 1.4rem;
+  margin: 25px 0 15px;
+}
+
+.section h4 {
+  color: var(--dark);
+  font-size: 1.2rem;
+  margin: 20px 0 10px;
+}
+
+.section p {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #334155;
+}
+
+.section ul, .section ol {
+  padding-right: 25px;
+  margin: 15px 0;
+}
+
+.section li {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+.review-box {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 25px;
+  border-radius: 15px;
+  margin: 20px 0;
+  border: 2px solid var(--warning);
+}
+
+.review-box h3 { color: #92400e; }
+
+.review-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.review-box li {
+  padding: 8px 0;
+  border-bottom: 1px dashed #d97706;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.compare-table th {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.compare-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.compare-table tr:nth-child(even) { background: #f8fafc; }
+.compare-table tr:hover { background: #e0e7ff; }
+
+.code-block {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 15px 0;
+  direction: ltr;
+  text-align: left;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.95rem;
+  overflow-x: auto;
+  border-right: 4px solid var(--accent);
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.kw { color: #c586c0; font-weight: bold; }
+.fn { color: #dcdcaa; }
+.str { color: #ce9178; }
+.num { color: #b5cea8; }
+.cmt { color: #6a9955; font-style: italic; }
+.var { color: #9cdcfe; }
+
+.callout {
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  border-right: 5px solid;
+  font-size: 1.05rem;
+}
+
+.callout-info { background: #dbeafe; border-color: var(--info); }
+.callout-tip { background: #d1fae5; border-color: var(--success); }
+.callout-warn { background: #fee2e2; border-color: var(--danger); }
+.callout-star { background: #fef3c7; border-color: var(--warning); }
+
+.callout h4 { margin-top: 0; margin-bottom: 10px; }
+
+.level-badge {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.level-1 { background: var(--success); }
+.level-2 { background: var(--warning); }
+.level-3 { background: var(--danger); }
+.level-4 { background: var(--accent); }
+
+.ide {
+  background: white;
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.ide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed #e2e8f0;
+}
+
+.ide-title {
+  font-weight: bold;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+.ide-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.ide-editor {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 15px;
+  border-radius: 8px;
+  font-family: 'Consolas', monospace;
+  font-size: 0.95rem;
+  direction: ltr;
+  text-align: left;
+  min-height: 200px;
+  white-space: pre-wrap;
+  line-height: 1.7;
+  outline: none;
+}
+
+.ide-output {
+  background: #000;
+  color: #0f0;
+  padding: 15px;
+  border-radius: 8px;
+  font-family: 'Consolas', monospace;
+  font-size: 0.95rem;
+  direction: ltr;
+  text-align: left;
+  min-height: 200px;
+  overflow-y: auto;
+  line-height: 1.7;
+}
+
+.btn {
+  background: linear-gradient(135deg, var(--success), #059669);
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 15px;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.simulator {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 3px solid var(--warning);
+  border-radius: 15px;
+  padding: 25px;
+  margin: 25px 0;
+}
+
+.simulator h3 { color: #92400e; margin-bottom: 20px; }
+
+.simulator-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.control-group {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.control-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--dark);
+}
+
+.control-group input, .control-group select {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.quiz-container {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.quiz-question {
+  background: var(--light);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border-right: 4px solid var(--primary);
+}
+
+.quiz-question h4 {
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+
+.quiz-options { display: grid; gap: 10px; }
+
+.quiz-option {
+  background: white;
+  border: 2px solid #e2e8f0;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 1rem;
+}
+
+.quiz-option:hover {
+  border-color: var(--primary);
+  background: #e0e7ff;
+  transform: translateX(-5px);
+}
+
+.quiz-option.correct {
+  background: #d1fae5;
+  border-color: var(--success);
+  font-weight: bold;
+}
+
+.quiz-option.wrong {
+  background: #fee2e2;
+  border-color: var(--danger);
+}
+
+.quiz-score {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary);
+  padding: 20px;
+  background: linear-gradient(135deg, #e0e7ff, #ddd6fe);
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.tasks-container {
+  background: linear-gradient(135deg, #ddd6fe, #e0e7ff);
+  padding: 25px;
+  border-radius: 15px;
+  margin: 20px 0;
+}
+
+.task {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  border-right: 5px solid;
+}
+
+.task-easy { border-color: var(--success); }
+.task-medium { border-color: var(--warning); }
+.task-hard { border-color: var(--danger); }
+.task-creative { border-color: var(--accent); }
+
+.task h4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.task-points {
+  background: var(--primary);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.hint {
+  background: #fef3c7;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 0.95rem;
+  border-right: 3px solid var(--warning);
+}
+
+.summary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  margin: 30px 0;
+}
+
+.summary h2 {
+  color: white;
+  border-bottom: 3px solid rgba(255,255,255,0.3);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.summary-item {
+  background: rgba(255,255,255,0.15);
+  padding: 15px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.summary-item h4 {
+  color: #fde68a;
+  margin-bottom: 8px;
+}
+
+.next-lecture {
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.next-lecture h2 { color: white; border: none; }
+.next-lecture .big-emoji { font-size: 4rem; }
+
+.footer-quote {
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8fafc, #e0e7ff);
+  border-radius: 15px;
+  margin: 30px 0;
+  font-size: 1.2rem;
+  color: var(--dark);
+}
+
+.footer-quote p { margin: 10px 0; }
+
+.project-block {
+  background: linear-gradient(135deg, #ddd6fe, #fbcfe8);
+  border: 3px solid var(--accent);
+  border-radius: 15px;
+  padding: 25px;
+  margin: 25px 0;
+}
+
+.project-block h3 { color: var(--accent); margin-bottom: 15px; }
+
+.turtle-visual {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-radius: 15px;
+  border: 2px dashed var(--info);
+}
+
+.turtle-box {
+  background: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid var(--primary);
+  min-width: 120px;
+}
+
+.turtle-box .emoji {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.turtle-box .command {
+  background: var(--primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-family: 'Consolas', monospace;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .header h1 { font-size: 2rem; }
+  .section { padding: 20px; }
+  .ide-content { grid-template-columns: 1fr; }
+  .compare-table { font-size: 0.9rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+  <span class="big-emoji"></span>
+  <h1>Python - الرسم بالسلحفاة Turtle Graphics</h1>
+  <div class="subtitle">حوّل الكود إلى فن! 🎨</div>
+  <div class="quote">"علّم السلحفاة كيف ترسم أشكالاً رائعة!"</div>
+</div>
+
+<div class="content">
+
+<!-- مراجعة -->
+<div class="section">
+  <h2> مراجعة سريعة - ما تعلمناه سابقاً</h2>
+  <p>تذكر ما تعلمناه في المحاضرات السابقة:</p>
+
+  <div class="review-box">
+    <h3>✅ المحاضرات السابقة:</h3>
+    <ul>
+      <li>✅ المتغيرات والدوال <code>def</code></li>
+      <li>✅ الحلقات <code>for</code> و <code>while</code></li>
+      <li>✅ الشروط <code>if/else</code></li>
+      <li>✅ مكتبة <code>random</code></li>
+      <li>✅ القوائم <code>Lists</code></li>
+    </ul>
+  </div>
+
+  <h3> اليوم:</h3>
+  <ul>
+    <li>🐢 ما هي مكتبة Turtle؟</li>
+    <li> تعلم رسم أشكال هندسية</li>
+    <li>🌈 استخدام الألوان والإبداع</li>
+    <li>🎮 بناء معرض رسومات فنية!</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <h4> سؤال سريع للمراجعة:</h4>
+    <p>كيف ترسم مربعاً باستخدام <code>for loop</code>؟</p>
+    <ul style="list-style: none; padding: 0;">
+      <li>️ نكتب 4 أسطر <code>print()</code></li>
+      <li>️ نستخدم <code>for i in range(4):</code> مع تحريك السلحفاة ✅</li>
+      <li>◻️ نرسمه يدوياً بالماوس</li>
+    </ul>
+  </div>
+</div>
+
+<!-- التشبيه الذهني -->
+<div class="section">
+  <h2> التشبيه الذهني - السلحفاة الروبوت الرسام! 🐢</h2>
+  
+  <p>تخيل أن لديك <strong>سلحفاة روبوت صغيرة</strong> تحمل قلماً في فمها! 🐢️</p>
+  <p>أنت تعطيها أوامر مثل: "امشي للأمام"، "استدر يميناً"، "غيّر لون القلم"</p>
+  <p>والسلحفاة تنفذ أوامرك وترسم شكلاً على الشاشة!</p>
+
+  <div class="turtle-visual">
+    <div class="turtle-box">
+      <div class="emoji">⬆️</div>
+      <div><strong>امشي للأمام</strong></div>
+      <div class="command">forward(100)</div>
+    </div>
+    <div class="turtle-box">
+      <div class="emoji">️</div>
+      <div><strong>استدر يميناً</strong></div>
+      <div class="command">right(90)</div>
+    </div>
+    <div class="turtle-box">
+      <div class="emoji">🎨</div>
+      <div><strong>غيّر اللون</strong></div>
+      <div class="command">color("red")</div>
+    </div>
+    <div class="turtle-box">
+      <div class="emoji"></div>
+      <div><strong>ارسم دائرة</strong></div>
+      <div class="command">circle(50)</div>
+    </div>
+  </div>
+
+  <p>هذه هي مكتبة <strong>Turtle</strong> في Python! </p>
+  <p>مكتبة مدمجة مع Python - لا تحتاج تثبيت! 🚀</p>
+
+  <div class="callout callout-info">
+    <h4>🎮 لماذا Turtle ممتعة؟</h4>
+    <ul>
+      <li>🎨 ترى النتيجة فوراً على الشاشة</li>
+      <li>🧮 تطبق الرياضيات (زوايا، مسافات)</li>
+      <li>🔄 تستخدم الحلقات لرسم أشكال متكررة</li>
+      <li>🎮 أساس للألعاب والرسوم المتحركة</li>
+    </ul>
+  </div>
+</div>
+
+<!-- الأهداف -->
+<div class="section">
+  <h2>🎯 أهداف اليوم</h2>
+  <ul>
+    <li> فهم مكتبة Turtle وكيفية استيرادها</li>
+    <li>⬆️ تعلم الحركة الأساسية (forward, backward, right, left)</li>
+    <li> تعلم تغيير الألوان والخطوط</li>
+    <li>⭕ تعلم رسم الأشكال (مربع، مثلث، دائرة، نجمة)</li>
+    <li> دمج Turtle مع <code>for loop</code> و <code>functions</code></li>
+    <li>🎨 بناء معرض رسومات فنية!</li>
+  </ul>
+</div>
+
+<!-- المستوى الأول -->
+<div class="section">
+  <h2><span class="level-badge level-1">المستوى الأول</span> 🟢 الحركة الأساسية</h2>
+
+  <div class="callout callout-info">
+    <h4>📐 استيراد المكتبة:</h4>
+    <div class="code-block"><span class="kw">import</span> turtle
+
+<span class="cmt"># إنشاء سلحفاة</span>
+t = turtle.<span class="fn">Turtle</span>()
+
+<span class="cmt"># إبقاء النافذة مفتوحة</span>
+turtle.<span class="fn">done</span>()</div>
+  </div>
+
+  <h3>🐢 أوامر الحركة الأساسية</h3>
+  <table class="compare-table">
+    <tr>
+      <th>الأمر</th>
+      <th>المعنى</th>
+      <th>مثال</th>
+    </tr>
+    <tr>
+      <td><code>forward(n)</code></td>
+      <td>امشي للأمام n خطوة</td>
+      <td><code>t.forward(100)</code></td>
+    </tr>
+    <tr>
+      <td><code>backward(n)</code></td>
+      <td>امشي للخلف n خطوة</td>
+      <td><code>t.backward(50)</code></td>
+    </tr>
+    <tr>
+      <td><code>right(deg)</code></td>
+      <td>استدر يميناً deg درجة</td>
+      <td><code>t.right(90)</code></td>
+    </tr>
+    <tr>
+      <td><code>left(deg)</code></td>
+      <td>استدر يساراً deg درجة</td>
+      <td><code>t.left(45)</code></td>
+    </tr>
+    <tr>
+      <td><code>penup()</code></td>
+      <td>ارفع القلم (لا ترسم)</td>
+      <td><code>t.penup()</code></td>
+    </tr>
+    <tr>
+      <td><code>pendown()</code></td>
+      <td>أنزل القلم (ابدأ الرسم)</td>
+      <td><code>t.pendown()</code></td>
+    </tr>
+  </table>
+
+  <h3>🐍 مثال 1: رسم خط بسيط</h3>
+  <div class="code-block"><span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+
+<span class="cmt"># ارسم خطاً طوله 100 خطوة</span>
+t.<span class="fn">forward</span>(<span class="num">100</span>)
+
+turtle.<span class="fn">done</span>()</div>
+
+  <h3>🐍 مثال 2: رسم مربع</h3>
+  <div class="code-block"><span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+
+<span class="cmt"># مربع = 4 أضلاع + 4 استدارات 90 درجة</span>
+t.<span class="fn">forward</span>(<span class="num">100</span>)
+t.<span class="fn">right</span>(<span class="num">90</span>)
+t.<span class="fn">forward</span>(<span class="num">100</span>)
+t.<span class="fn">right</span>(<span class="num">90</span>)
+t.<span class="fn">forward</span>(<span class="num">100</span>)
+t.<span class="fn">right</span>(<span class="num">90</span>)
+t.<span class="fn">forward</span>(<span class="num">100</span>)
+t.<span class="fn">right</span>(<span class="num">90</span>)
+
+turtle.<span class="fn">done</span>()</div>
+
+  <div class="callout callout-tip">
+    <h4>💡 ملاحظة مهمة:</h4>
+    <p>المربع له 4 أضلاع متساوية، وزاويته 90 درجة!</p>
+    <p>لكن الكود طويل... هل يمكننا اختصاره؟ </p>
+  </div>
+</div>
+
+<!-- المستوى الثاني -->
+<div class="section">
+  <h2><span class="level-badge level-2">المستوى الثاني</span> 🟡 الألوان والأشكال</h2>
+
+  <h3>🎨 أوامر الألوان والخطوط</h3>
+  <div class="code-block"><span class="cmt"># تغيير لون القلم</span>
+t.<span class="fn">color</span>(<span class="str">"red"</span>)
+
+<span class="cmt"># تغيير سمك الخط</span>
+t.<span class="fn">pensize</span>(<span class="num">5</span>)
+
+<span class="cmt"># تغيير سرعة الرسم (1-10)</span>
+t.<span class="fn">speed</span>(<span class="num">5</span>)
+
+<span class="cmt"># تغيير لون الخلفية</span>
+turtle.<span class="fn">bgcolor</span>(<span class="str">"lightblue"</span>)</div>
+
+  <h3> مثال 3: مربع ملون</h3>
+  <div class="code-block"><span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+t.<span class="fn">color</span>(<span class="str">"red"</span>)
+t.<span class="fn">pensize</span>(<span class="num">3</span>)
+t.<span class="fn">speed</span>(<span class="num">5</span>)
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">4</span>):
+    t.<span class="fn">forward</span>(<span class="num">100</span>)
+    t.<span class="fn">right</span>(<span class="num">90</span>)
+
+turtle.<span class="fn">done</span>()</div>
+
+  <h3> مثال 4: مثلث</h3>
+  <div class="code-block"><span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+t.<span class="fn">color</span>(<span class="str">"green"</span>)
+
+<span class="cmt"># مثلث = 3 أضلاع + 3 استدارات 120 درجة</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+    t.<span class="fn">forward</span>(<span class="num">100</span>)
+    t.<span class="fn">left</span>(<span class="num">120</span>)
+
+turtle.<span class="fn">done</span>()</div>
+
+  <div class="ide">
+    <div class="ide-header">
+      <span class="ide-title">🎮 جربها بنفسك - محاكاة</span>
+    </div>
+    <div class="ide-content">
+      <div class="ide-editor" contenteditable="true" id="editor1"># محاكاة رسم مربع (بدون Turtle حقيقية)
+print("🐢 رسم مربع:")
+print("=" * 30)
+
+sides = 4
+angle = 90
+length = 100
+
+print(f"عدد الأضلاع: {sides}")
+print(f"الزاوية: {angle}°")
+print(f"الطول: {length}")
+print()
+
+for i in range(sides):
+    print(f"الخطوة {i+1}:")
+    print(f"  ➡️  forward({length})")
+    print(f"  ️  right({angle})")
+
+print()
+print("✅ تم رسم المربع!")</div>
+      <div class="ide-output" id="output1">اضغط Run ▶</div>
+    </div>
+    <button class="btn" onclick="runCode('editor1', 'output1')">▶ Run Code</button>
+  </div>
+
+  <div class="callout callout-star">
+    <h4>🌟 قاعدة الزوايا:</h4>
+    <p>لرسم شكل منتظم بـ <strong>n</strong> أضلاع:</p>
+    <p>الزاوية = <strong>360 ÷ n</strong></p>
+    <ul>
+      <li>مربع (4): 360 ÷ 4 = <strong>90°</strong></li>
+      <li>مثلث (3): 360 ÷ 3 = <strong>120°</strong></li>
+      <li>خماسي (5): 360 ÷ 5 = <strong>72°</strong></li>
+      <li>سداسي (6): 360  6 = <strong>60°</strong></li>
+    </ul>
+  </div>
+</div>
+
+<!-- المستوى الثالث -->
+<div class="section">
+  <h2><span class="level-badge level-3">المستوى الثالث</span> 🔴 الدوال والأشكال المتقدمة</h2>
+
+  <h3>🎯 دالة رسم مربع</h3>
+  <div class="code-block"><span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+
+<span class="kw">def</span> <span class="fn">draw_square</span>(size, color):
+    t.<span class="fn">color</span>(color)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">4</span>):
+        t.<span class="fn">forward</span>(size)
+        t.<span class="fn">right</span>(<span class="num">90</span>)
+
+<span class="cmt"># ارسم 3 مربعات بألوان مختلفة</span>
+draw_square(<span class="num">100</span>, <span class="str">"red"</span>)
+t.<span class="fn">penup</span>()
+t.<span class="fn">forward</span>(<span class="num">150</span>)
+t.<span class="fn">pendown</span>()
+draw_square(<span class="num">80</span>, <span class="str">"blue"</span>)
+
+turtle.<span class="fn">done</span>()</div>
+
+  <h3> مثال 5: رسم نجمة </h3>
+  <div class="code-block"><span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+t.<span class="fn">color</span>(<span class="str">"gold"</span>)
+t.<span class="fn">speed</span>(<span class="num">5</span>)
+
+<span class="cmt"># نجمة = 5 نقاط، زاوية 144 درجة</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">5</span>):
+    t.<span class="fn">forward</span>(<span class="num">100</span>)
+    t.<span class="fn">right</span>(<span class="num">144</span>)
+
+turtle.<span class="fn">done</span>()</div>
+
+  <h3> مثال 6: رسم دائرة </h3>
+  <div class="code-block"><span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+t.<span class="fn">color</span>(<span class="str">"blue"</span>)
+
+<span class="cmt"># رسم دائرة نصف قطرها 50</span>
+t.<span class="fn">circle</span>(<span class="num">50</span>)
+
+turtle.<span class="fn">done</span>()</div>
+
+  <div class="ide">
+    <div class="ide-header">
+      <span class="ide-title">🎮 جربها بنفسك - أشكال متعددة</span>
+    </div>
+    <div class="ide-content">
+      <div class="ide-editor" contenteditable="true" id="editor2"># محاكاة رسم أشكال متعددة
+print("🎨 معرض الأشكال الهندسية")
+print("=" * 40)
+
+shapes = [
+    ("مربع", 4, 90, "red"),
+    ("مثلث", 3, 120, "green"),
+    ("خماسي", 5, 72, "blue"),
+    ("سداسي", 6, 60, "purple"),
+    ("نجمة", 5, 144, "gold")
+]
+
+for name, sides, angle, color in shapes:
+    print(f"\n{name} {color}:")
+    print(f"  الأضلاع: {sides}")
+    print(f"  الزاوية: {angle}°")
+    for i in range(sides):
+        print(f"    خطوة {i+1}: forward(100), right({angle})")
+
+print("\n" + "=" * 40)
+print("✅ تم رسم جميع الأشكال!")</div>
+      <div class="ide-output" id="output2">اضغط Run ▶</div>
+    </div>
+    <button class="btn" onclick="runCode('editor2', 'output2')">▶ Run Code</button>
+  </div>
+</div>
+
+<!-- المستوى الرابع -->
+<div class="section">
+  <h2><span class="level-badge level-4">المستوى الرابع</span> 🟣 الحلزونيات والفن</h2>
+
+  <h3>🌀 رسم حلزون ملون</h3>
+  <div class="code-block"><span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+t.<span class="fn">speed</span>(<span class="num">0</span>)  <span class="cmt"># أسرع سرعة</span>
+turtle.<span class="fn">bgcolor</span>(<span class="str">"black"</span>)
+
+colors = [<span class="str">"red"</span>, <span class="str">"orange"</span>, <span class="str">"yellow"</span>, <span class="str">"green"</span>, <span class="str">"blue"</span>, <span class="str">"purple"</span>]
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">100</span>):
+    t.<span class="fn">color</span>(colors[i % <span class="num">6</span>])  <span class="cmt"># تغيير اللون</span>
+    t.<span class="fn">forward</span>(i * <span class="num">2</span>)      <span class="cmt"># زيادة الطول</span>
+    t.<span class="fn">right</span>(<span class="num">91</span>)            <span class="cmt"># زاوية غير منتظمة</span>
+
+turtle.<span class="fn">done</span>()</div>
+
+  <h3>🎨 رسم زهرة</h3>
+  <div class="code-block"><span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+t.<span class="fn">speed</span>(<span class="num">0</span>)
+t.<span class="fn">color</span>(<span class="str">"pink"</span>)
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">36</span>):
+    t.<span class="fn">circle</span>(<span class="num">50</span>)
+    t.<span class="fn">right</span>(<span class="num">10</span>)
+
+turtle.<span class="fn">done</span>()</div>
+
+  <div class="ide">
+    <div class="ide-header">
+      <span class="ide-title">🎮 جربها بنفسك - فن الحلزون</span>
+    </div>
+    <div class="ide-content">
+      <div class="ide-editor" contenteditable="true" id="editor3"># محاكاة رسم حلزون
+print("🌀 رسم حلزون ملون")
+print("=" * 40)
+
+colors = ["red", "orange", "yellow", "green", "blue", "purple"]
+
+print(f"عدد الخطوات: 100")
+print(f"الألوان: {', '.join(colors)}")
+print()
+
+for i in range(10):  # نعرض أول 10 خطوات فقط
+    color = colors[i % 6]
+    length = i * 2
+    print(f"الخطوة {i+1}:")
+    print(f"   اللون: {color}")
+    print(f"  ➡️  forward({length})")
+    print(f"  ↩️  right(91)")
+
+print()
+print(" تخيل الشكل النهائي: حلزون ملون رائع!")</div>
+      <div class="ide-output" id="output3">اضغط Run ▶</div>
+    </div>
+    <button class="btn btn-primary" onclick="runCode('editor3', 'output3')">▶ Run Code</button>
+  </div>
+
+  <div class="callout callout-info">
+    <h4>💡 نصائح للإبداع:</h4>
+    <ul>
+      <li> جرب ألوان مختلفة: <code>"red", "blue", "green", "purple", "gold"</code></li>
+      <li>⚡ السرعة 0 = أسرع، 1 = أبطأ</li>
+      <li>🔄 غيّر الزوايا لرأشكال فريدة</li>
+      <li>📏 غيّر الأطوال لإنشاء أنماط</li>
+    </ul>
+  </div>
+</div>
+
+<!-- المحاكي -->
+<div class="simulator">
+  <h3>🐢 محاكي Turtle التفاعلي</h3>
+  <p>جرب بنفسك! اختر الشكل وشاهد الأوامر:</p>
+
+  <div class="simulator-controls">
+    <div class="control-group">
+      <label>الشكل:</label>
+      <select id="sim-shape">
+        <option value="square">⬜ مربع</option>
+        <option value="triangle">🔺 مثلث</option>
+        <option value="pentagon">⬟ خماسي</option>
+        <option value="star">⭐ نجمة</option>
+        <option value="circle">⭕ دائرة</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>اللون:</label>
+      <select id="sim-color">
+        <option value="red">🔴 أحمر</option>
+        <option value="blue">🔵 أزرق</option>
+        <option value="green"> أخضر</option>
+        <option value="purple">🟣 بنفسجي</option>
+        <option value="gold"> ذهبي</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>الحجم:</label>
+      <input type="number" id="sim-size" value="100" min="50" max="200">
+    </div>
+  </div>
+
+  <button class="btn btn-primary" onclick="runSimulator()">▶️ شغّل المحاكاة</button>
+
+  <div class="code-block" style="margin-top: 15px;">
+<span class="kw">import</span> turtle
+
+t = turtle.<span class="fn">Turtle</span>()
+t.<span class="fn">color</span>(<span class="str">"<span id="code-color">red</span>"</span>)
+
+<span class="cmt"># رسم <span id="code-shape">مربع</span></span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num"><span id="code-sides">4</span></span>):
+    t.<span class="fn">forward</span>(<span class="num"><span id="code-size">100</span></span>)
+    t.<span class="fn">right</span>(<span class="num"><span id="code-angle">90</span></span>)
+
+turtle.<span class="fn">done</span>()
+  </div>
+
+  <div style="margin-top: 15px;">
+    <strong>📤 النتيجة:</strong>
+    <div class="ide-output" id="sim-output" style="margin-top: 10px; min-height: 120px;">
+اضغط "شغّل المحاكاة" لرؤية الأوامر...
+    </div>
+  </div>
+</div>
+
+<!-- المشروع -->
+<div class="section">
+  <h2>🎨 المشروع: معرض الرسومات الفنية</h2>
+  <p>هنعمل برنامج يرسم مجموعة أشكال فنية جميلة!</p>
+
+  <div class="project-block">
+    <h3>🖼️ معرض الأشكال</h3>
+    <div class="ide" style="height: 500px;">
+      <div class="ide-header">
+        <span class="ide-title">🎮 جرب المشروع</span>
+      </div>
+      <div class="ide-content">
+        <div class="ide-editor" contenteditable="true" id="project1"># ═══════════════════════════════════════
+#  معرض الرسومات الفنية
+# ═══════════════════════════════════════
+
+print("🎨 مرحباً بك في معرض الرسومات!")
+print("=" * 40)
+
+# دالة رسم مربع
+def draw_square(size, color):
+    print(f"\n⬜ رسم مربع {color} بحجم {size}:")
+    for i in range(4):
+        print(f"  forward({size}), right(90)")
+
+# دالة رسم مثلث
+def draw_triangle(size, color):
+    print(f"\n🔺 رسم مثلث {color} بحجم {size}:")
+    for i in range(3):
+        print(f"  forward({size}), right(120)")
+
+# دالة رسم نجمة
+def draw_star(size, color):
+    print(f"\n⭐ رسم نجمة {color} بحجم {size}:")
+    for i in range(5):
+        print(f"  forward({size}), right(144)")
+
+# دالة رسم دائرة
+def draw_circle(radius, color):
+    print(f"\n⭕ رسم دائرة {color} بنصف قطر {radius}:")
+    print(f"  circle({radius})")
+
+# المعرض
+shapes = [
+    ("square", 100, "red"),
+    ("triangle", 80, "green"),
+    ("star", 120, "gold"),
+    ("circle", 60, "blue")
+]
+
+print("\n🖼️ بدء المعرض...")
+print("-" * 40)
+
+for shape, size, color in shapes:
+    if shape == "square":
+        draw_square(size, color)
+    elif shape == "triangle":
+        draw_triangle(size, color)
+    elif shape == "star":
+        draw_star(size, color)
+    elif shape == "circle":
+        draw_circle(size, color)
+
+print("\n" + "=" * 40)
+print("🎉 انتهى المعرض! شكراً لزيارتك!")</div>
+        <div class="ide-output" id="projectOut1">اضغط Run ▶</div>
+      </div>
+      <button class="btn btn-primary" onclick="runCode('project1', 'projectOut1')">▶ Run Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- الاختبار -->
+<div class="section">
+  <h2>🧠 اختبر معلوماتك - 10 أسئلة</h2>
+  <p>أجب عن الأسئلة التالية واختبر فهمك!</p>
+
+  <div class="quiz-container">
+    <div class="quiz-score" id="quizScore">النتيجة: 0 / 10</div>
+
+    <div class="quiz-question">
+      <h4>س1: كيف نستورد مكتبة Turtle؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, false, 1)">include turtle</div>
+        <div class="quiz-option" onclick="checkAnswer(this, true, 1)">import turtle</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 1)">using turtle</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 1)">require turtle</div>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <h4>س2: ما الأمر لتحريك السلحفاة للأمام 100 خطوة؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, false, 2)">t.move(100)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, true, 2)">t.forward(100)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 2)">t.go(100)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 2)">t.walk(100)</div>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <h4>س3: ما الزاوية اللازمة لرسم مربع؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, false, 3)">45 درجة</div>
+        <div class="quiz-option" onclick="checkAnswer(this, true, 3)">90 درجة</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 3)">120 درجة</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 3)">180 درجة</div>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <h4>س4: ما الأمر لتغيير لون القلم؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, false, 4)">t.paint("red")</div>
+        <div class="quiz-option" onclick="checkAnswer(this, true, 4)">t.color("red")</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 4)">t.set_color("red")</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 4)">t.pen_color("red")</div>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <h4>س5: ما الأمر لرفع القلم (التوقف عن الرسم)؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, true, 5)">t.penup()</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 5)">t.lift()</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 5)">t.stop()</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 5)">t.raise_pen()</div>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <h4>س6: كم درجة نحتاج للاستدارة لرسم مثلث متساوي الأضلاع؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, false, 6)">90 درجة</div>
+        <div class="quiz-option" onclick="checkAnswer(this, true, 6)">120 درجة</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 6)">60 درجة</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 6)">180 درجة</div>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <h4>س7: ما الأمر لرسم دائرة نصف قطرها 50؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, false, 7)">t.draw_circle(50)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, true, 7)">t.circle(50)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 7)">t.oval(50)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 7)">t.round(50)</div>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <h4>س8: ما السرعة الأسرع في Turtle؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, false, 8)">t.speed(1)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 8)">t.speed(5)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, true, 8)">t.speed(0)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 8)">t.speed(10)</div>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <h4>س9: ما الأمر لتغيير سمك الخط؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, false, 9)">t.thick(5)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, true, 9)">t.pensize(5)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 9)">t.width(5)</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 9)">t.line_size(5)</div>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <h4>س10: ما الزاوية لرسم نجمة خماسية؟</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this, false, 10)">72 درجة</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 10)">90 درجة</div>
+        <div class="quiz-option" onclick="checkAnswer(this, true, 10)">144 درجة</div>
+        <div class="quiz-option" onclick="checkAnswer(this, false, 10)">120 درجة</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- مهام مميزة -->
+<div class="section">
+  <h2>🎯 5 مهام مميزة - تحدي المبرمجين!</h2>
+  <p>اختر المهمة التي تناسب مستواك وابدأ التحدي!</p>
+
+  <div class="tasks-container">
+    <div class="task task-easy">
+      <h4>
+        🥉 سهل - 20 نقطة
+        <span class="task-points">المهمة 1: رسم مربع</span>
+      </h4>
+      <p>اكتب برنامجاً يرسم مربعاً أحمر بحجم 100 بكسل.</p>
+      <div class="hint">
+        💡 <strong>تلميح:</strong> استخدم <code>for i in range(4):</code> مع <code>right(90)</code>
+      </div>
+    </div>
+
+    <div class="task task-easy">
+      <h4>
+        🥉 سهل - 25 نقطة
+        <span class="task-points">المهمة 2: رسم مثلث</span>
+      </h4>
+      <p>ارسم مثلثاً أخضر بحجم 120 بكسل.</p>
+      <div class="hint">
+         <strong>تلميح:</strong> المثلث له 3 أضلاع وزاوية 120 درجة
+      </div>
+    </div>
+
+    <div class="task task-medium">
+      <h4>
+        🥈 متوسط - 35 نقطة
+        <span class="task-points">المهمة 3: رسم نجمة</span>
+      </h4>
+      <p>ارسم نجمة خماسية ذهبية بحجم 150 بكسل.</p>
+      <div class="hint">
+        💡 <strong>تلميح:</strong> استخدم <code>right(144)</code> للنجمة
+      </div>
+    </div>
+
+    <div class="task task-medium">
+      <h4>
+        🥈 متوسط - 40 نقطة
+        <span class="task-points">المهمة 4: أشكال متعددة</span>
+      </h4>
+      <p>ارسم 4 أشكال مختلفة (مربع، مثلث، خماسي، سداسي) بألوان مختلفة في مواقع مختلفة.</p>
+      <div class="hint">
+        💡 <strong>تلميح:</strong> استخدم <code>penup()</code> و <code>pendown()</code> للتنقل
+      </div>
+    </div>
+
+    <div class="task task-creative">
+      <h4>
+        🎨 إبداعي - 60 نقطة
+        <span class="task-points">المهمة 5: فن الحلزون</span>
+      </h4>
+      <p>اصنع رسمة فنية باستخدام:
+      <br>• حلزون ملون (100 خطوة)
+      <br>• 6 ألوان مختلفة
+      <br>• زوايا متغيرة
+      <br>• خلفية سوداء
+      <br>اجعلها جميلة ومبهرة!
+      </p>
+      <div class="hint">
+        💡 <strong>تلميح:</strong> استخدم <code>colors[i % 6]</code> لتغيير الألوان
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- الملخص -->
+<div class="summary">
+  <h2>📋 ملخص المحاضرة</h2>
+
+  <div class="summary-grid">
+    <div class="summary-item">
+      <h4>🐢 الاستيراد</h4>
+      <p><code>import turtle</code></p>
+    </div>
+    <div class="summary-item">
+      <h4>⬆️ للأمام</h4>
+      <p><code>t.forward(n)</code></p>
+    </div>
+    <div class="summary-item">
+      <h4>↩️ استدارة</h4>
+      <p><code>t.right(deg)</code></p>
+    </div>
+    <div class="summary-item">
+      <h4> اللون</h4>
+      <p><code>t.color("red")</code></p>
+    </div>
+    <div class="summary-item">
+      <h4>⭕ دائرة</h4>
+      <p><code>t.circle(r)</code></p>
+    </div>
+    <div class="summary-item">
+      <h4>✏️ سمك الخط</h4>
+      <p><code>t.pensize(n)</code></p>
+    </div>
+  </div>
+
+  <h3>🎯 القواعد الذهبية:</h3>
+  <ul style="list-style: none; padding: 0;">
+    <li>✅ نستخدم <code>import turtle</code> في البداية</li>
+    <li>✅ ننشئ سلحفاة بـ <code>t = turtle.Turtle()</code></li>
+    <li>✅ نغلق بـ <code>turtle.done()</code></li>
+    <li>✅ زاوية المربع = 90°، المثلث = 120°، النجمة = 144°</li>
+    <li>✅ نستخدم <code>for loop</code> لتكرار الأوامر</li>
+    <li>✅ <code>penup()</code> و <code>pendown()</code> للتنقل بدون رسم</li>
+  </ul>
+</div>
+
+<!-- المحاضرة القادمة -->
+<div class="next-lecture">
+  <span class="big-emoji">️</span>
+  <h2>المحاضرة القادمة</h2>
+  <h3>معالجة الأخطاء (try/except)</h3>
+  <p>تعلّم كيف تحمي برامجك من الانهيار!</p>
+  <p>🛡️ سنصنع برامج لا تنكسر أبداً!</p>
+</div>
+
+<!-- الاقتباس الختامي -->
+<div class="footer-quote">
+  <p>🌟 <strong>تذكروا دائمًا:</strong></p>
+  <p>Turtle = فن البرمجة المرئي 🎨</p>
+  <p>كلما مارست أكثر، أصبحت أقوى! </p>
+  <p>أنتم مبرمجون رائعون! 🚀</p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+function runCode(editorId, outId) {
+  var editor = document.getElementById(editorId);
+  var code = editor.innerText || editor.textContent;
+  var output = document.getElementById(outId);
+  
+  output.innerHTML = '';
+  output.style.color = '#0f0';
+  
+  try {
+    // محاكاة بسيطة للـ Python
+    var lines = code.split('\n');
+    var result = '';
+    
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (line.startsWith('print(')) {
+        var content = line.substring(6, line.length - 1);
+        content = content.replace(/"/g, '').replace(/'/g, '');
+        result += content + '\n';
+      }
+    }
+    
+    output.innerHTML = result.replace(/\n/g, '<br>');
+  } catch (e) {
+    output.innerHTML = '❌ Error: ' + e.message;
+    output.style.color = '#f87171';
+  }
+}
+
+function runSimulator() {
+  var shape = document.getElementById('sim-shape').value;
+  var color = document.getElementById('sim-color').value;
+  var size = document.getElementById('sim-size').value;
+  
+  var shapes = {
+    'square': { name: 'مربع', sides: 4, angle: 90 },
+    'triangle': { name: 'مثلث', sides: 3, angle: 120 },
+    'pentagon': { name: 'خماسي', sides: 5, angle: 72 },
+    'star': { name: 'نجمة', sides: 5, angle: 144 },
+    'circle': { name: 'دائرة', sides: 1, angle: 0 }
+  };
+  
+  var shapeData = shapes[shape];
+  
+  document.getElementById('code-shape').textContent = shapeData.name;
+  document.getElementById('code-color').textContent = color;
+  document.getElementById('code-sides').textContent = shapeData.sides;
+  document.getElementById('code-size').textContent = size;
+  document.getElementById('code-angle').textContent = shapeData.angle;
+  
+  var output = document.getElementById('sim-output');
+  var result = '';
+  
+  result += `🐢 رسم ${shapeData.name} ${color}:\n`;
+  result += '═'.repeat(40) + '\n';
+  result += `اللون: ${color}\n`;
+  result += `الحجم: ${size}\n`;
+  result += `الأضلاع: ${shapeData.sides}\n`;
+  result += `الزاوية: ${shapeData.angle}°\n\n`;
+  
+  if (shape === 'circle') {
+    result += `⭕ circle(${size})\n`;
+  } else {
+    for (var i = 0; i < shapeData.sides; i++) {
+      result += `الخطوة ${i+1}:\n`;
+      result += `  ➡️  forward(${size})\n`;
+      result += `  ↩️  right(${shapeData.angle})\n\n`;
+    }
+  }
+  
+  result += '═'.repeat(40) + '\n';
+  result += `✅ تم رسم ${shapeData.name}!`;
+  
+  output.innerHTML = result.replace(/\n/g, '<br>');
+  output.style.color = '#0f0';
+}
+
+var score = 0;
+var answered = {};
+
+function checkAnswer(element, isCorrect, qNum) {
+  if (answered[qNum]) return;
+  answered[qNum] = true;
+  
+  var parent = element.parentElement;
+  var options = parent.querySelectorAll('.quiz-option');
+  
+  options.forEach(function(opt) {
+    opt.style.pointerEvents = 'none';
+  });
+  
+  if (isCorrect) {
+    element.classList.add('correct');
+    element.innerHTML += ' ✅';
+    score++;
+  } else {
+    element.classList.add('wrong');
+    element.innerHTML += ' ❌';
+    options.forEach(function(opt) {
+      var onclickAttr = opt.getAttribute('onclick');
+      if (onclickAttr && onclickAttr.includes('true')) {
+        opt.classList.add('correct');
+      }
+    });
+  }
+  
+  document.getElementById('quizScore').textContent = 'النتيجة: ' + score + ' / 10';
+}
+</script>
+
+</body>
+</html>
